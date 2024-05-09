@@ -1,5 +1,5 @@
 <template>
-    <form>
+    <form @submit.prevent="handleUpdate">
 		<label>Title:</label>
 		<input
 			type="text"
@@ -23,6 +23,17 @@ export default {
             title: '',
             details: '',
             uri: 'http://localhost:3000/projects/' + this.id
+        }
+    },
+    methods: {
+        handleUpdate() {
+            fetch(this.uri, {
+					method: "PATCH",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ title: this.title, details: this.details }),
+				}).then(() => {
+					this.$router.push('/')
+				}).catch(err => console.log(err))
         }
     },
     mounted() {
